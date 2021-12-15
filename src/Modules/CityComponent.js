@@ -53,7 +53,7 @@ const CityComponent = (props) => {
             {/*<CityInput>Weather</CityInput>*/}
             <SearchBox onSubmit={fetchLocation} >
             {/*<SearchBox onSubmit={getWeather}>*/}
-                <input placeholder={"Enter a location"}
+                <input placeholder={"Enter a location "}
                        // onChange={(e)=> InputHandler(e.target.value)}
                        onChange={(e)=> updateLocation(e.target.value)}
 
