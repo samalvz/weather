@@ -6,6 +6,7 @@ import CityComponent from "./Modules/CityComponent";
 import WeatherComponent from "./Modules/WeatherInfoComponent";
 //import WeatherInfoComponent from "./Modules/WeatherInfoComponent";
 
+// API keys exposed on git
 // open weather API_KEY
 const OW_API_KEY = "0bbbfd796e294a1afc7993e4729a8969"
 // position stack API_KEY
