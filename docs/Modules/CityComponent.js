@@ -49,7 +49,7 @@ const CityComponent = (props) => {
     return (
         //fragment
         <>
-            {/*<WeatherLogo src={"./icons/perfect-day.svg"}/>*/}
+            {/*<WeatherLogo docs={"./icons/perfect-day.svg"}/>*/}
             {/*<CityInput>Weather</CityInput>*/}
             <SearchBox onSubmit={fetchLocation} >
             {/*<SearchBox onSubmit={getWeather}>*/}

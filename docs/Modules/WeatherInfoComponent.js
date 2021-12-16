@@ -195,7 +195,7 @@ const WeatherComponent = (props) => {
         <>
             {/*<ExitButton>*/}
             {/*    <button onClick={BackButton}>*/}
-             {/*        <img src={"./icons/UI/small-x.png"} alt={"close"} width={"50%"} />*/}
+             {/*        <img docs={"./icons/UI/small-x.png"} alt={"close"} width={"50%"} />*/}
             {/*    </button>*/}
             {/*</ExitButton>*/}
 
