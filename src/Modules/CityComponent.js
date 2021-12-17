@@ -44,7 +44,7 @@ const SearchBox = styled.form`
 //endregion
 
 const CityComponent = (props) => {
-    const {updateLocation, fetchLocation} = props
+    const {updateQuery, fetchLocation} = props
 
     return (
         //fragment
@@ -55,7 +55,7 @@ const CityComponent = (props) => {
             {/*<SearchBox onSubmit={getWeather}>*/}
                 <input placeholder={"Enter a location "}
                        // onChange={(e)=> InputHandler(e.target.value)}
-                       onChange={(e)=> updateLocation(e.target.value)}
+                       onChange={(e)=> updateQuery(e.target.value)}
 
                 />
                 <button type={"submit"}>Search</button>

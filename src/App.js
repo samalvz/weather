@@ -23,25 +23,25 @@ const Container = styled.div`
   border-radius: 4px;
   width: 380px;
   background: white;
-  font-family: Montserrat,serif;
+  font-family: Montserrat, serif;
 `
 
 
 function App() {
     // users typed in location
-    const [location, updateLocation] = useState('');
+    const [query, updateQuery] = useState('');
     // exact location returned by Position Stack API
-    const [preciseLocation, updatePresLoc] = useState('');
+    const [location, updateLocation] = useState('');
     // weather returned from Open Weather API (using preciseLocation)
     const [weather, updateWeather] = useState('');
 
     // position stack api gets precise location data (coordinates, city, state, country, continent, etc)
     // todo positionstack returns a list of many locations, it is possible to present this list to users to choose from
-    const fetchLocation = async(e) => {
+    const fetchLocation = async (e) => {
         e.preventDefault()
         let locationResponse = await
-            axios.get(`http://api.positionstack.com/v1/forward?access_key=${PS_ACCESS_KEY}&query=${location}`)
-        await updatePresLoc(locationResponse.data.data[0])
+            axios.get(`http://api.positionstack.com/v1/forward?access_key=${PS_ACCESS_KEY}&query=${query}`)
+        await updateLocation(locationResponse.data.data[0])
 
         // set lat and lon from pos stack
         let latitude = locationResponse.data.data[0].latitude
@@ -57,14 +57,52 @@ function App() {
         updateWeather(weatherResponse.data)
     }
 
+    const geolocate = async (e) => {
+        e.preventDefault()
+
+        //todo move this
+        const GEO_API_KEY = '6a81c1c4304f48f4bc9206e60b0d28a1';
+        // Geoapify API fetch
+        const geoUrl = `https://api.geoapify.com/v1/geocode/autocomplete?text=${query}&apiKey=${GEO_API_KEY}`
+        var geoLocation;
+        let latitude;
+        let longitude
+        await axios.get(geoUrl)
+            .then(response=>{
+                geoLocation = response.data.features;
+                updateLocation(geoLocation)
+                latitude = response.data.features[0].properties.lat;
+                longitude = response.data.features[0].properties.lon;
+                //console.log(latitude, longitude)
+            })
+            .catch(error => {
+                console.log('error Geoapfiy', error)
+            })
+
+        let units = "imperial"  // todo currently hardcoded 'imperial' mode
+        let url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}`
+        if (units === "imperial") url = url + "&units=imperial"
+        url += `&appid=${OW_API_KEY}`
+        // open weather fetch
+        await axios.get(url)
+            .then(response =>{
+                // update weather state component with openweather response
+                updateWeather(response)
+            })
+            .catch(error =>{
+                console.log('error open weather', error)
+            })
+    }
+
     return (
         <Container>
             {/*if weather fetched (input entered), then render weather component*/}
             {weather ?
-                <WeatherComponent location={preciseLocation} weather={weather}/> :
-                <CityComponent updateLocation={updateLocation} fetchLocation={fetchLocation}/>
+                <WeatherComponent location={location} weather={weather}/> :
+                <CityComponent updateQuery={updateQuery} fetchLocation={geolocate}/>
             }
         </Container>
     )
 }
+
 export default App;

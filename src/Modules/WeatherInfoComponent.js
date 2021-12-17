@@ -2,8 +2,8 @@ import styled from "styled-components"
 
 // region icons
 export const WeatherInfoIcons = {
-    Sunset: "./icons/temp.svg",
-    Sunrise: "./icons/temp.svg",
+    Sunset: ".public/icons/temp.svg",
+    Sunrise: ".public/icons/temp.svg",
     Humidity: "./icons/humidity.svg",
     Wind: "./icons/wind.svg",
     Pressure: "./icons/pressure.svg",
@@ -61,7 +61,7 @@ const LocalTime = styled.span
     `
 const Location = styled.span
     `
-      font-size: 28px;
+      font-size: 25px;
       text-transform: capitalize;
       font-weight: bold;
       margin: 15px auto;
@@ -161,7 +161,11 @@ const WeatherInfoComponent = (props) => {
 
 const WeatherComponent = (props) => {
     const {location, weather} = props;
-    const isDay = weather.weather[0].icon.includes("d");
+    //console.log("weather.data.weather: ", weather.data.weather)
+    console.log('location component: ', location)
+
+    // does openweather return daytime for this location?
+    const isDay = weather.data.weather[0].icon.includes('d');
 
     // use provided sunrise/set time and convert to location's local time
     const getSunTime = (timeStamp, timezone, isDay) => {
@@ -193,6 +197,7 @@ const WeatherComponent = (props) => {
 
     return (
         <>
+            {/*todo clean this area up and make more variables above this is ugly*/}
             {/*<ExitButton>*/}
             {/*    <button onClick={BackButton}>*/}
              {/*        <img src={"./icons/UI/small-x.png"} alt={"close"} width={"50%"} />*/}
@@ -200,29 +205,34 @@ const WeatherComponent = (props) => {
             {/*</ExitButton>*/}
 
             <Location>
-                {`${location.label}`}</Location>
+                {`
+                ${location[0].properties.address_line1}, 
+                ${location[0].properties.country}
+                `}
+            </Location>
+            <img src={"public/icons/cloudy.svg"}/>
 
             <Temperature>
                 {/*Fahrenheit*/}
-                <span>H: {`${Math.floor(weather.main.temp_max)}°F | `}</span>
-                <span>L : {`${Math.floor(weather.main.temp_min)}°F`}</span>
-                <br/>Feels Like: {`${Math.floor(weather.main.feels_like)}°F`}
+                <span>H: {`${Math.floor(weather.data.main.temp_max)}°F | `}</span>
+                <span>L : {`${Math.floor(weather.data.main.temp_min)}°F`}</span>
+                <br/>Feels Like: {`${Math.floor(weather.data.main.feels_like)}°F`}
                 {/*Celsius */}
                 {/*<span>H: {`${Math.floor((weather.main.temp_max - 273) * (9/5) + 32)}°F | `}</span>*/}
                 {/*<span>L : {`${Math.floor((weather.main.temp_min - 273) * (9/5) + 32)}°F`}</span>*/}
             </Temperature>
 
             <LocalTime>
-                Local Time: {getLocationTime(weather.timezone)}
+                Local Time: {getLocationTime(weather.data.timezone)}
             </LocalTime>
 
             <WeatherCondition>
                 <Condition>
-                    {weather.weather[0].main}
+                    {weather.data.weather[0].main}
                     <br/>
-                    <span>{weather.weather[0].description}</span>
+                    <span>{weather.data.weather[0].description}</span>
                 </Condition>
-                <WeatherLogo src={WeatherIcons[weather.weather[0].icon]}/>
+                <WeatherLogo src={WeatherIcons[weather.data.weather[0].icon]}/>
             </WeatherCondition>
 
             <WeatherInfoLabel>Weather Info</WeatherInfoLabel>
@@ -230,11 +240,11 @@ const WeatherComponent = (props) => {
             <WeatherInfoContainer>
                 <WeatherInfoComponent
                     name={isDay ? "Sunset" : "Sunrise"}
-                    value={getSunTime(weather.sys[isDay ? "sunset" : "sunrise"], weather.timezone, isDay)} // not sure why this has to be lowercase
+                    value={getSunTime(weather.data.sys[isDay ? "sunset" : "sunrise"], weather.data.timezone, isDay)} // not sure why this has to be lowercase
                 />
-                <WeatherInfoComponent name={"Humidity"} value={weather.main.humidity}/>
-                <WeatherInfoComponent name={"Wind"} value={weather.wind.speed}/>
-                <WeatherInfoComponent name={"Pressure"} value={weather.main.pressure}/>
+                <WeatherInfoComponent name={"Humidity"} value={weather.data.main.humidity}/>
+                <WeatherInfoComponent name={"Wind"} value={weather.data.wind.speed}/>
+                <WeatherInfoComponent name={"Pressure"} value={weather.data.main.pressure}/>
             </WeatherInfoContainer>
         </>
     )
