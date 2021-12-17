@@ -2,8 +2,8 @@ import styled from "styled-components"
 
 // region icons
 export const WeatherInfoIcons = {
-    Sunset: ".public/icons/temp.svg",
-    Sunrise: ".public/icons/temp.svg",
+    Sunset: "./icons/temp.svg",
+    Sunrise: "./icons/temp.svg",
     Humidity: "./icons/humidity.svg",
     Wind: "./icons/wind.svg",
     Pressure: "./icons/pressure.svg",
@@ -210,7 +210,6 @@ const WeatherComponent = (props) => {
                 ${location[0].properties.country}
                 `}
             </Location>
-            <img src={"public/icons/cloudy.svg"}/>
 
             <Temperature>
                 {/*Fahrenheit*/}
