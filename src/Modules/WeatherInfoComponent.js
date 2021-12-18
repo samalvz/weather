@@ -2,11 +2,11 @@ import styled from "styled-components"
 
 // region icons
 export const WeatherInfoIcons = {
-    Sunset: "./icons/sunset.svg",
-    Sunrise: "./icons/sunrise.svg",
-    Humidity: "./icons/humidity.svg",
-    Wind: "./icons/wind.svg",
-    Pressure: "./icons/pressure.svg",
+    Sunset: "https://samalvz.github.io/weather/icons/sunset.svg",
+    Sunrise: "https://samalvz.github.io/weather/icons/sunrise.svg",
+    Humidity: "https://samalvz.github.io/weather/icons/humidity.svg",
+    Wind: "https://samalvz.github.io/weather/icons/wind.svg",
+    Pressure: "https://samalvz.github.io/weather/icons/pressure.svg",
 }
 
 export const WeatherIcons = {
@@ -219,7 +219,7 @@ const WeatherComponent = (props) => {
 
     return (
         <>
-            {/*todo clean this area up and make more variables above this is ugly*/}
+
             {/*<ExitButton>*/}
             {/*    <button onClick={BackButton}>*/}
              {/*        <img src={"./icons/UI/small-x.png"} alt={"close"} width={"50%"} />*/}
@@ -257,7 +257,7 @@ const WeatherComponent = (props) => {
                 <Condition>
                     {weather.data.weather[0].description}
                 </Condition>
-                <WeatherLogo src={`http://openweathermap.org/img/wn/${icon}@2x.png`}/>
+                <WeatherLogo style={{background: '#d9f4ff'}} src={`http://openweathermap.org/img/wn/${icon}@2x.png`}/>
             </WeatherCondition>
 
             <WeatherInfoLabel>Weather Info</WeatherInfoLabel>
@@ -275,7 +275,7 @@ const WeatherComponent = (props) => {
                     value={getSunTime(weather.data.sys["sunset"], weather.data.timezone)}/>
                 <WeatherHumidComponent name={"Humidity"} temp={weather.data.main.temp} value={weather.data.main.humidity}/>
                 <WeatherInfoComponent name={"Wind"} additional={'mph'} value={weather.data.wind.speed}/>
-                <WeatherInfoComponent name={"Pressure"} additional={''} value={weather.data.main.pressure}/>
+                <WeatherInfoComponent name={"Pressure"} additional={'hPa'} value={weather.data.main.pressure}/>
             </WeatherInfoContainer>
         </>
     )
