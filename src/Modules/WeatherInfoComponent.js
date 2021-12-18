@@ -5,12 +5,12 @@ export const WeatherInfoIcons = {
     Sunset: "./icons/temp.svg",
     Sunrise: "./icons/temp.svg",
     Humidity: "./icons/humidity.svg",
-    Wind: "./icons/wind.svg",
+    Wind: "/icons/wind.svg",
     Pressure: "./icons/pressure.svg",
 }
 
 export const WeatherIcons = {
-    //todo some weather conditions have no icons (e.g. 50n for mist)
+    //no longer used
     "01d": "./icons/sunny.svg",
     "01n": "./icons/night.svg",
     "02d": "./icons/day.svg",
@@ -161,10 +161,10 @@ const WeatherInfoComponent = (props) => {
     )
 }
 const WeatherHumidComponent = (props) => {
-    const {name, value, temp, text, additional} = props;
+    const {name, value, temp} = props;
     const style={textAlign:"center"}
-    // rudimentary calculation
-    // Td = Tc - ((100 -RH)/5)
+    const text = "Humid. |dew pnt."
+    // basic dew point formula -> Td = Tc - ((100 -RH)/5)
     let tempCelsius = (temp - 32) * (5/9)
     const dewPoint = tempCelsius - ((100 - value)/5)
     const dewPointF = Math.floor((dewPoint * (9/5)) + 32)
@@ -172,7 +172,7 @@ const WeatherHumidComponent = (props) => {
         <InfoContainer style={style}>
             <InfoIcon src={WeatherInfoIcons[name]}/>
             <InfoLabel >
-                {value} | {dewPointF} °F
+                {value}% | {dewPointF} °F
                 <span>{text}</span>
             </InfoLabel>
         </InfoContainer>
@@ -267,7 +267,7 @@ const WeatherComponent = (props) => {
                     name={isDay ? "Sunset" : "Sunrise"}
                     value={getSunTime(weather.data.sys[isDay ? "sunset" : "sunrise"], weather.data.timezone, isDay)} // not sure why this has to be lowercase
                 />
-                <WeatherHumidComponent name={"Humid"} text={"Humid.|dew pnt."} additional={''} temp={weather.data.main.temp} value={weather.data.main.humidity}/>
+                <WeatherHumidComponent name={"Humidity"} temp={weather.data.main.temp} value={weather.data.main.humidity}/>
                 <WeatherInfoComponent name={"Wind"} additional={'mph'} value={weather.data.wind.speed}/>
                 <WeatherInfoComponent name={"Pressure"} additional={''} value={weather.data.main.pressure}/>
             </WeatherInfoContainer>
