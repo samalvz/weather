@@ -5,7 +5,7 @@ export const WeatherInfoIcons = {
     Sunset: "./icons/sunset.svg",
     Sunrise: "./icons/sunrise.svg",
     Humidity: "./icons/humidity.svg",
-    Wind: "/icons/wind.svg",
+    Wind: "./icons/wind.svg",
     Pressure: "./icons/pressure.svg",
 }
 
