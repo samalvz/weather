@@ -161,19 +161,19 @@ const WeatherInfoComponent = (props) => {
     )
 }
 const WeatherHumidComponent = (props) => {
-    const {name, value, temp, additional} = props;
+    const {name, value, temp, text, additional} = props;
     const style={textAlign:"center"}
     // rudimentary calculation
     // Td = Tc - ((100 -RH)/5)
-    let tempCelcius = (temp - 32) * (5/9)
-    const dewPoint = tempCelcius - ((100 - value)/5)
+    let tempCelsius = (temp - 32) * (5/9)
+    const dewPoint = tempCelsius - ((100 - value)/5)
     const dewPointF = Math.floor((dewPoint * (9/5)) + 32)
     return (
         <InfoContainer style={style}>
             <InfoIcon src={WeatherInfoIcons[name]}/>
             <InfoLabel >
                 {value} | {dewPointF} °F
-                <span>{name}</span>
+                <span>{text}</span>
             </InfoLabel>
         </InfoContainer>
     )
@@ -267,7 +267,7 @@ const WeatherComponent = (props) => {
                     name={isDay ? "Sunset" : "Sunrise"}
                     value={getSunTime(weather.data.sys[isDay ? "sunset" : "sunrise"], weather.data.timezone, isDay)} // not sure why this has to be lowercase
                 />
-                <WeatherHumidComponent name={"Humid.|dew pnt."} additional={''} temp={weather.data.main.temp} value={weather.data.main.humidity}/>
+                <WeatherHumidComponent name={"Humid"} text={"Humid.|dew pnt."} additional={''} temp={weather.data.main.temp} value={weather.data.main.humidity}/>
                 <WeatherInfoComponent name={"Wind"} additional={'mph'} value={weather.data.wind.speed}/>
                 <WeatherInfoComponent name={"Pressure"} additional={''} value={weather.data.main.pressure}/>
             </WeatherInfoContainer>
