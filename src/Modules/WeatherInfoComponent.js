@@ -147,6 +147,7 @@ const InfoLabel = styled.div
     `
 //endregion
 
+// element for sunrise, sunset, wind, and pressure
 const WeatherInfoComponent = (props) => {
     const {name, value, additional} = props;
 
@@ -160,6 +161,8 @@ const WeatherInfoComponent = (props) => {
         </InfoContainer>
     )
 }
+
+// element for humidity and dewpoint
 const WeatherHumidComponent = (props) => {
     const {name, value, temp} = props;
     const style={textAlign:"center"}
@@ -179,14 +182,15 @@ const WeatherHumidComponent = (props) => {
     )
 }
 
+// element for top half of card
 const WeatherComponent = (props) => {
     const {location, weather} = props;
     //console.log("weather.data.weather: ", weather.data.weather)
-    console.log('location component: ', location)
-    console.log('weather component: ', weather)
+    //console.log('location component: ', location)
+    //console.log('weather component: ', weather)
 
     // does openweather return daytime for this location?
-    //const isDay = weather.data.weather[0].icon.includes('d');
+    const isDay = weather.data.weather[0].icon.includes('d');
     const icon = weather.data.weather[0].icon;
 
     // use provided sunrise/set time and convert to location's local time
@@ -213,18 +217,19 @@ const WeatherComponent = (props) => {
 
     // backbutton to return to city component (searchbar)
     const BackButton = () =>{
-        //todo add button functionality
-        console.log("go back button")
+        // simple page refresh
+        window.location.reload(false);
     }
+
 
     return (
         <>
 
-            {/*<ExitButton>*/}
-            {/*    <button onClick={BackButton}>*/}
-             {/*        <img src={"./icons/UI/small-x.png"} alt={"close"} width={"50%"} />*/}
-            {/*    </button>*/}
-            {/*</ExitButton>*/}
+            <ExitButton>
+                <button onClick={BackButton}>
+                     <img src={"https://samalvz.github.io/weather/icons/UI/small-x.png"} alt={"close"} width={"50%"} />
+                </button>
+            </ExitButton>
 
             <Location>
                 {`
@@ -257,7 +262,7 @@ const WeatherComponent = (props) => {
                 <Condition>
                     {weather.data.weather[0].description}
                 </Condition>
-                <WeatherLogo style={{background: '#d9f4ff'}} src={`http://openweathermap.org/img/wn/${icon}@2x.png`}/>
+                <WeatherLogo  src={`https://openweathermap.org/img/wn/${icon}@2x.png`}/>
             </WeatherCondition>
 
             <WeatherInfoLabel>Weather Info</WeatherInfoLabel>
