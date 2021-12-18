@@ -190,7 +190,7 @@ const WeatherComponent = (props) => {
     const icon = weather.data.weather[0].icon;
 
     // use provided sunrise/set time and convert to location's local time
-    const getSunTime = (timeStamp, timezone, isDay) => {
+    const getSunTime = (timeStamp, timezone) => {
         let d = new Date(timeStamp * 1000)
         let localOffset = d.getTimezoneOffset() * 60000;
         let nd = (d.getTime() + localOffset) + (1000 * timezone)
@@ -263,10 +263,16 @@ const WeatherComponent = (props) => {
             <WeatherInfoLabel>Weather Info</WeatherInfoLabel>
 
             <WeatherInfoContainer>
+                {/*<WeatherInfoComponent*/}
+                {/*    name={isDay ? "Sunset" : "Sunrise"}*/}
+                {/*    value={getSunTime(weather.data.sys[isDay ? "sunset" : "sunrise"], weather.data.timezone, isDay)} // not sure why this has to be lowercase*/}
+                {/*/>*/}
                 <WeatherInfoComponent
-                    name={isDay ? "Sunset" : "Sunrise"}
-                    value={getSunTime(weather.data.sys[isDay ? "sunset" : "sunrise"], weather.data.timezone, isDay)} // not sure why this has to be lowercase
-                />
+                    name={"Sunrise"}
+                    value={getSunTime(weather.data.sys["sunrise"], weather.data.timezone)}/>
+                <WeatherInfoComponent
+                    name={"Sunset"}
+                    value={getSunTime(weather.data.sys["sunset"], weather.data.timezone)}/>
                 <WeatherHumidComponent name={"Humidity"} temp={weather.data.main.temp} value={weather.data.main.humidity}/>
                 <WeatherInfoComponent name={"Wind"} additional={'mph'} value={weather.data.wind.speed}/>
                 <WeatherInfoComponent name={"Pressure"} additional={''} value={weather.data.main.pressure}/>
