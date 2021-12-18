@@ -61,6 +61,7 @@ const LocalTime = styled.span
     `
 const Location = styled.span
     `
+      text-align: center;
       font-size: 25px;
       text-transform: capitalize;
       font-weight: bold;
@@ -72,10 +73,10 @@ const Temperature = styled.span
       margin: 0 0 10px;
       text-transform: capitalize;
       text-align: center;
-      font-size: 14px;
+      font-size: 20px;
       //background: grey;
       & span {
-        font-size: 20px
+        font-size: 16px
       }
     `
 
@@ -90,11 +91,11 @@ const Condition = styled.span
         font-weight: lighter;
       }
     `
-
+// main image next to weather description
 const WeatherLogo = styled.img
     `
-      width: 100px;
-      height: 100px;
+      width: 125px;
+      height: 125px;
       margin: 5px auto auto auto;
     `
 
@@ -147,12 +148,31 @@ const InfoLabel = styled.div
 //endregion
 
 const WeatherInfoComponent = (props) => {
-    const {name, value} = props;
+    const {name, value, additional} = props;
+    //todo can pass value for an "additional" component (for mph wind)
     return (
         <InfoContainer>
             <InfoIcon src={WeatherInfoIcons[name]}/>
             <InfoLabel>
-                {value}
+                {value} {additional}
+                <span>{name}</span>
+            </InfoLabel>
+        </InfoContainer>
+    )
+}
+const WeatherHumidComponent = (props) => {
+    const {name, value, temp, additional} = props;
+    const style={textAlign:"center"}
+    // rudimentary calculation
+    // Td = Tc - ((100 -RH)/5)
+    let tempCelcius = (temp - 32) * (5/9)
+    const dewPoint = tempCelcius - ((100 - value)/5)
+    const dewPointF = Math.floor((dewPoint * (9/5)) + 32)
+    return (
+        <InfoContainer style={style}>
+            <InfoIcon src={WeatherInfoIcons[name]}/>
+            <InfoLabel >
+                {value} | {dewPointF} °F
                 <span>{name}</span>
             </InfoLabel>
         </InfoContainer>
@@ -163,9 +183,11 @@ const WeatherComponent = (props) => {
     const {location, weather} = props;
     //console.log("weather.data.weather: ", weather.data.weather)
     console.log('location component: ', location)
+    console.log('weather component: ', weather)
 
     // does openweather return daytime for this location?
     const isDay = weather.data.weather[0].icon.includes('d');
+    const icon = weather.data.weather[0].icon;
 
     // use provided sunrise/set time and convert to location's local time
     const getSunTime = (timeStamp, timezone, isDay) => {
@@ -213,9 +235,15 @@ const WeatherComponent = (props) => {
 
             <Temperature>
                 {/*Fahrenheit*/}
-                <span>H: {`${Math.floor(weather.data.main.temp_max)}°F | `}</span>
-                <span>L : {`${Math.floor(weather.data.main.temp_min)}°F`}</span>
-                <br/>Feels Like: {`${Math.floor(weather.data.main.feels_like)}°F`}
+                Current: {`${Math.floor(weather.data.main.temp)}°F`}
+                <br/>
+                H: {`${Math.floor(weather.data.main.temp_max)}°F | `}
+                L: {`${Math.floor(weather.data.main.temp_min)}°F`}
+                <br/>
+                <span>
+                    Feels Like: {`${Math.floor(weather.data.main.feels_like)}°F`}
+                </span>
+
                 {/*Celsius */}
                 {/*<span>H: {`${Math.floor((weather.main.temp_max - 273) * (9/5) + 32)}°F | `}</span>*/}
                 {/*<span>L : {`${Math.floor((weather.main.temp_min - 273) * (9/5) + 32)}°F`}</span>*/}
@@ -227,11 +255,9 @@ const WeatherComponent = (props) => {
 
             <WeatherCondition>
                 <Condition>
-                    {weather.data.weather[0].main}
-                    <br/>
-                    <span>{weather.data.weather[0].description}</span>
+                    {weather.data.weather[0].description}
                 </Condition>
-                <WeatherLogo src={WeatherIcons[weather.data.weather[0].icon]}/>
+                <WeatherLogo src={`http://openweathermap.org/img/wn/${icon}@2x.png`}/>
             </WeatherCondition>
 
             <WeatherInfoLabel>Weather Info</WeatherInfoLabel>
@@ -241,9 +267,9 @@ const WeatherComponent = (props) => {
                     name={isDay ? "Sunset" : "Sunrise"}
                     value={getSunTime(weather.data.sys[isDay ? "sunset" : "sunrise"], weather.data.timezone, isDay)} // not sure why this has to be lowercase
                 />
-                <WeatherInfoComponent name={"Humidity"} value={weather.data.main.humidity}/>
-                <WeatherInfoComponent name={"Wind"} value={weather.data.wind.speed}/>
-                <WeatherInfoComponent name={"Pressure"} value={weather.data.main.pressure}/>
+                <WeatherHumidComponent name={"Humid.|dew pnt."} additional={''} temp={weather.data.main.temp} value={weather.data.main.humidity}/>
+                <WeatherInfoComponent name={"Wind"} additional={'mph'} value={weather.data.wind.speed}/>
+                <WeatherInfoComponent name={"Pressure"} additional={''} value={weather.data.main.pressure}/>
             </WeatherInfoContainer>
         </>
     )
