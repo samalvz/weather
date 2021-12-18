@@ -2,8 +2,8 @@ import styled from "styled-components"
 
 // region icons
 export const WeatherInfoIcons = {
-    Sunset: "./icons/temp.svg",
-    Sunrise: "./icons/temp.svg",
+    Sunset: "./icons/sunset.svg",
+    Sunrise: "./icons/sunrise.svg",
     Humidity: "./icons/humidity.svg",
     Wind: "/icons/wind.svg",
     Pressure: "./icons/pressure.svg",
@@ -12,17 +12,17 @@ export const WeatherInfoIcons = {
 export const WeatherIcons = {
     //no longer used
     "01d": "./icons/sunny.svg",
-    "01n": "./icons/night.svg",
+    "01n": "./icons/sunset.svg",
     "02d": "./icons/day.svg",
-    "02n": "./icons/cloudy-night.svg",
+    "02n": "./icons/cloudy-sunset.svg",
     "03d": "./icons/cloudy.svg",
     "03n": "./icons/cloudy.svg",
     "04d": "./icons/perfect-day.svg",
-    "04n": "./icons/cloudy-night.svg",
+    "04n": "./icons/cloudy-sunset.svg",
     "09d": "./icons/rain.svg",
-    "09n": "./icons/rain-night.svg",
+    "09n": "./icons/rain-sunset.svg",
     "10d": "./icons/rain.svg",
-    "10n": "./icons/rain-night.svg",
+    "10n": "./icons/rain-sunset.svg",
     "11d": "./icons/storm.svg",
     "11n": "./icons/storm.svg",
 }
@@ -149,7 +149,7 @@ const InfoLabel = styled.div
 
 const WeatherInfoComponent = (props) => {
     const {name, value, additional} = props;
-    //todo can pass value for an "additional" component (for mph wind)
+
     return (
         <InfoContainer>
             <InfoIcon src={WeatherInfoIcons[name]}/>
@@ -186,7 +186,7 @@ const WeatherComponent = (props) => {
     console.log('weather component: ', weather)
 
     // does openweather return daytime for this location?
-    const isDay = weather.data.weather[0].icon.includes('d');
+    //const isDay = weather.data.weather[0].icon.includes('d');
     const icon = weather.data.weather[0].icon;
 
     // use provided sunrise/set time and convert to location's local time
