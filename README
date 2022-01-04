@@ -9,7 +9,8 @@ and the following packages:
 2. Styled Components (https://styled-components.com/)
 
 Description of how this app uses said APIs:
-1. Position Stack - This API will return coordinates for the user's entered query location. Position stack will also autocomplete an entered location if it is recognized, or it will return the nearest found location.
+1. Position Stack - This API will return coordinates for the user's entered query location. Position stack will also autocomplete an entered location if it is 
+recognized, or it will return the nearest found location.
 2. Open weather - receives coordinates and returns weather conditions for this location.
 3. Axios - used for request handling
 4. Styled Components - used in place of CSS styling. All styling is done using this package. Usage of this package can be seen within the "city" and "weather" components 
