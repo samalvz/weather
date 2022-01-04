@@ -36,27 +36,6 @@ function App() {
     const [weather, updateWeather] = useState('');
 
     // position stack api gets precise location data (coordinates, city, state, country, continent, etc)
-    // todo positionstack returns a list of many locations, it is possible to present this list to users to choose from
-    const fetchLocation = async (e) => {
-        e.preventDefault()
-        let locationResponse = await
-            axios.get(`http://api.positionstack.com/v1/forward?access_key=${PS_ACCESS_KEY}&query=${query}`)
-        await updateLocation(locationResponse.data.data[0])
-
-        // set lat and lon from pos stack
-        let latitude = locationResponse.data.data[0].latitude
-        let longitude = locationResponse.data.data[0].longitude
-        // open weather url building
-        let units = "imperial"  // todo currently hardcoded 'imperial' mode
-        let url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}`
-        if (units === "imperial") url = url + "&units=imperial"
-        url += `&appid=${OW_API_KEY}`
-        // open weather fetch
-        const weatherResponse = await axios.get(url)
-        // update weather state
-        updateWeather(weatherResponse.data)
-    }
-
     const geolocate = async (e) => {
         e.preventDefault()
 
